@@ -1,0 +1,22 @@
+ldap.url=ldaps://directory.example.com:636
+ldap.query=uid=%u
+ldap.baseDn=ou=People,dc=example,dc=com
+
+# Connection timeout in ms
+ldap.connectTimeout=3000
+
+ldap.pool.minIdle=3
+ldap.pool.maxIdle=3
+ldap.pool.maxSize=10
+ldap.pool.maxWait=3000
+
+ldap.pool.testOnBorrow=false
+ldap.pool.testWhileIdle=true
+
+# Attempt to evict idle connections every N seconds
+ldap.pool.evictionPeriod=600000
+
+# Maximum amount of time an idle connection is allowed to be in
+# pool before it is liable to be removed/destroyed
+ldap.pool.idleTime=1200000
+

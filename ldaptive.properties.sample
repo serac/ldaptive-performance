@@ -1,0 +1,29 @@
+ldap.url=ldap://directory.example.com:389
+ldap.useStartTLS=true
+ldap.baseDn=ou=People,dc=example,dc=com
+ldap.query=uid={user}
+
+# Connection timeout in ms
+ldap.connectTimeout=3000
+
+# Amount of time in milliseconds to block on pool exhausted condition
+# before giving up.
+ldap.pool.blockWaitTime=3000
+
+ldap.pool.minSize=2
+ldap.pool.maxSize=5
+ldap.pool.validateOnCheckout=false
+ldap.pool.validatePeriodically=true
+
+# Frequency of connection validation in seconds
+# Only occurs when pool is idle (no active connections)
+ldap.pool.validatePeriod=60
+
+# Attempt to prune connections every N seconds
+ldap.pool.prunePeriod=600
+
+# Maximum amount of time an idle connection is allowed to be in
+# pool before it is liable to be removed/destroyed
+ldap.pool.idleTime=1200
+
+

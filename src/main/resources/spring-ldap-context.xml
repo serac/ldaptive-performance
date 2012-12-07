@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd">
+
+  <bean id="propertyPlaceholderConfigurer"
+        class="org.springframework.context.support.PropertySourcesPlaceholderConfigurer"
+        p:location="file:spring-ldap.properties" />
+
+  <bean id="ldapContextSource"
+        class="org.springframework.ldap.core.support.LdapContextSource"
+        p:pooled="false"
+        p:url="${ldap.url}">
+    <property name="baseEnvironmentProperties">
+      <map>
+        <entry key="com.sun.jndi.ldap.connect.timeout" value="${ldap.connectTimeout}" />
+      </map>
+    </property>
+  </bean>
+
+  <!-- Defined a source of pooled LDAP connections to ED-ID -->
+  <bean id="pooledLdapContextSource"
+        class="org.springframework.ldap.pool.factory.PoolingContextSource"
+        p:minIdle="${ldap.pool.minIdle}"
+        p:maxIdle="${ldap.pool.maxIdle}"
+        p:maxActive="${ldap.pool.maxSize}"
+        p:maxWait="${ldap.pool.maxWait}"
+        p:timeBetweenEvictionRunsMillis="${ldap.pool.evictionPeriod}"
+        p:minEvictableIdleTimeMillis="${ldap.pool.idleTime}"
+        p:testOnBorrow="${ldap.pool.testOnBorrow}"
+        p:testWhileIdle="${ldap.pool.testWhileIdle}"
+        p:dirContextValidator-ref="edDirContextValidator"
+        p:contextSource-ref="ldapContextSource" />
+
+
+  <!-- Query RootDSE for no attributes at suggestion of dhawes -->
+  <bean id="edDirContextValidator"
+        class="org.springframework.ldap.pool.validation.DefaultDirContextValidator"
+        p:base=""
+        p:filter="objectclass=*">
+    <property name="searchControls">
+      <bean class="javax.naming.directory.SearchControls"
+            p:timeLimit="1000"
+            p:countLimit="1"
+            p:searchScope="0"
+            p:returningAttributes="" />
+    </property>
+  </bean>
+
+  <bean id="ldapAuthHandler" class="org.jasig.cas.adaptors.ldap.BindLdapAuthenticationHandler"
+        p:filter="${ldap.query}"
+        p:searchBase="${ldap.baseDn}"
+        p:contextSource-ref="ldapContextSource"
+        p:searchContextSource-ref="pooledLdapContextSource" />
+
+</beans>
