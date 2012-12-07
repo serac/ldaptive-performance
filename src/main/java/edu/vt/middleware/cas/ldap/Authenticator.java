@@ -40,8 +40,6 @@ public class Authenticator implements Runnable {
         final Sample.Result result = success ? Sample.Result.SUCCESS : Sample.Result.FAILURE;
         try {
             this.state.getResultQueue().put(new Sample(start, new Date(), result));
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        } catch (InterruptedException e) {}
     }
 }
