@@ -32,17 +32,7 @@
         p:validator-ref="searchValidator"
         p:pruneStrategy-ref="pruneStrategy"/>
 
-  <bean id="ldaptiveProvider" class="org.ldaptive.provider.jndi.JndiProvider">
-    <property name="providerConfig">
-      <bean class="org.ldaptive.provider.jndi.JndiProviderConfig">
-        <property name="environment">
-          <map>
-            <entry key="java.naming.factory.initial" value="com.sun.jndi.ldap.LdapCtxFactory" />
-          </map>
-        </property>
-      </bean>
-    </property>
-  </bean>
+  <bean id="ldaptiveProvider" class="org.ldaptive.provider.unboundid.UnboundIDProvider" />
 
   <bean id="ldapConnectionConfig" parent="baseConnectionConfig"
         p:ldapUrl="${ldap.url}" />
